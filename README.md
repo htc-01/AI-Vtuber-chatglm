@@ -9,18 +9,26 @@
 
 - 增加了记忆模式和扮演模式，可用命令行传参
 
+- 支持最新版本的bilibili-api，解决旧版本偶尔无法捕捉弹幕的问题
+
+
 ### 运行环境
 - Python 3.10
 
- 此外你需要先按照[ChatGLM-6B](https://github.com/THUDM/ChatGLM-6B)配置环境
+ 此外你需要先按照[ChatGLM3](https://github.com/THUDM/ChatGLM3)配置环境
  
 ### 使用
+1. 修改main-async.py文件的几个参数：
+![image](https://github.com/htc-01/AI-Vtuber-chatglm/assets/77454549/897744ed-52d7-45cd-b6f5-d39bdf75e608)
+
+这些参数的获取详见https://nemo2011.github.io/bilibili-api/#/get-credential
+
 1. 运行以下命令启动程序：
 ```bash
 pip install -r requirements.txt
 python main-async.py
 ```
-
+2. 双击启动.bat（原理上同上，修改参数需编辑bat文件）
 - 此外，现在已经支持一些可选参数如下
 
 -  -m, --memory :启用记忆模式，默认会记住最新的4轮问答
