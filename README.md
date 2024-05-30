@@ -22,6 +22,8 @@
 ![image](https://github.com/htc-01/AI-Vtuber-chatglm/assets/77454549/897744ed-52d7-45cd-b6f5-d39bdf75e608)
 
 这些参数的获取详见https://nemo2011.github.io/bilibili-api/#/get-credential
+修改模型路径
+![image](https://github.com/htc-01/AI-Vtuber-chatglm/assets/77454549/3abfd436-373a-4e47-8fea-cdf4ea2b809c)
 
 1. 运行以下命令启动程序：
 ```bash
