@@ -3,17 +3,27 @@ import datetime
 import queue
 import subprocess
 import threading
+import sys
+import os
 
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
-from bilibili_api import live, sync
+from bilibili_api import Credential, Danmaku, sync
 from transformers import AutoTokenizer, AutoModel
+from bilibili_api.live import LiveDanmaku, LiveRoom
+credential = Credential(
+    sessdata="这里填入你的sessdata",
+    bili_jct="这里填入你的bili_jct",
+    buvid3="这里填入你的buvid3"
+)
+
+
 
 print("=====================================================================")
 print("让AI帮你回复弹幕，这样你就可以快乐玩游戏了！")
 print("我重写了整个代码，现在她可以异步处理弹幕了，这将大幅降低回复延迟")
 print("现在也支持扮演和会话记忆设置，喜欢的话给个三连吧！")
-print("ChatGLM-6B：                https://github.com/THUDM/ChatGLM-6B")
-print("注意你需要至少6G以上的N卡，另外，我没有也不打算弄粉丝群 by 领航员未鸟")
+print("ChatGLM3：                https://github.com/THUDM/ChatGLM3")
+print("注意你需要至少6G以上的N卡，另外，我没有也不打算弄粉丝群 by 领航员未鸟by 夜雨天梦")
 print("=====================================================================\n")
 
 QuestionList = queue.Queue(10)  # 定义问题 用户名 回复 播放列表 四个先进先出队列
@@ -75,9 +85,9 @@ def role_set():
 initialize()
 print("=====================================================================\n")
 print(f'开始导入ChatGLM模型\n')
-tokenizer = AutoTokenizer.from_pretrained("THUDM/chatglm-6b-int4-qe", cache_dir="./", trust_remote_code=True)  # 导入chatglm 你可以换你喜欢的版本模型
-model = AutoModel.from_pretrained("THUDM/chatglm-6b-int4-qe", cache_dir="./", trust_remote_code=True).half().cuda()
-model = model.eval()
+tokenizer = AutoTokenizer.from_pretrained("模型地址", trust_remote_code=True)  # 导入chatglm 你可以换你喜欢的版本模型
+model = AutoModel.from_pretrained("模型地址", trust_remote_code=True).quantize(4).half().cuda()
+#model = model.eval()
 if enable_role:
     print("\n=====================================================================")
     Role_history = role_set()
@@ -88,13 +98,15 @@ print("--------------------")
 print("启动成功！")
 print("--------------------")
 
-room_id = int(input("输入你的直播间编号: "))  # 输入直播间编号
-room = live.LiveDanmaku(room_id)  # 连接弹幕服务器
 
+room_id = int(input("输入你的直播间编号: "))  # 输入直播间编号
+monitor = LiveDanmaku(room_id, credential=credential)
 sched1 = AsyncIOScheduler(timezone="Asia/Shanghai")
 
 
-@room.on('DANMU_MSG')  # 弹幕消息事件回调函数
+
+
+@monitor.on("DANMU_MSG")
 async def on_danmaku(event):
     """
      处理弹幕消息
@@ -235,7 +247,7 @@ def main():
     sched1.add_job(check_tts, 'interval', seconds=1, id=f'tts', max_instances=4)
     sched1.add_job(check_mpv, 'interval', seconds=1, id=f'mpv', max_instances=4)
     sched1.start()
-    sync(room.connect())  # 开始监听弹幕流
+    sync(monitor.connect())    # 开始监听弹幕流
 
 
 if __name__ == '__main__':
