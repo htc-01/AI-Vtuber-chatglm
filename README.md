@@ -22,15 +22,15 @@
 ![image](https://github.com/htc-01/AI-Vtuber-chatglm/assets/77454549/897744ed-52d7-45cd-b6f5-d39bdf75e608)
 
 这些参数的获取详见https://nemo2011.github.io/bilibili-api/#/get-credential
-修改模型路径
+2. 修改模型路径
 ![image](https://github.com/htc-01/AI-Vtuber-chatglm/assets/77454549/3abfd436-373a-4e47-8fea-cdf4ea2b809c)
 
-1. 运行以下命令启动程序：
+3. 运行以下命令启动程序：
 ```bash
 pip install -r requirements.txt
 python main-async.py
 ```
-2. 双击启动.bat（原理上同上，修改参数需编辑bat文件）
+3. 双击启动.bat（原理上同上，修改参数需编辑bat文件）
 - 此外，现在已经支持一些可选参数如下
 
 -  -m, --memory :启用记忆模式，默认会记住最新的4轮问答
